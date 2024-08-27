@@ -1,20 +1,37 @@
+import React, { useEffect } from 'react';
+import { AppRegistry, View } from 'react-native';
+import { Provider, useDispatch, useSelector } from 'react-redux';
+import store from './redux/store';
+import FloatingActionButton from './components/FloatingActionButton';
+import LoginScreen from './components/LoginScreen';
+import { name as appName } from './app.json';
+import Toast from 'react-native-toast-message';
+import { loadUsersFromStorage } from './redux/authSlice';
 
-import React from 'react';
-import { AppRegistry } from 'react-native'; 
-import { Provider } from 'react-redux'; 
-import store from './redux/store'; 
-import FloatingActionButton from './components/FloatingActionButton'; 
-import { name as appName } from './app.json'; 
+const AppContent = () => {
+  const dispatch = useDispatch();
+  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
+
+  useEffect(() => {
+    dispatch(loadUsersFromStorage());
+  }, [dispatch]);
+
+  return (
+    <View style={{ flex: 1 }}>
+      {isLoggedIn ? <FloatingActionButton /> : <LoginScreen />}
+    </View>
+  );
+};
 
 const App = () => {
   return (
     <Provider store={store}>
-      <FloatingActionButton />
+      <AppContent />
+      <Toast />
     </Provider>
   );
 };
 
-// Register the app component
 AppRegistry.registerComponent(appName, () => App);
 
 export default App;
