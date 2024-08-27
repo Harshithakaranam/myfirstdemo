@@ -25,6 +25,8 @@ const imageSlice = createSlice({
   },
 });
 
+
+
 // AsyncStorage functions
 export const saveImagesToStorage = async (images) => {
   try {
@@ -38,13 +40,13 @@ export const saveImagesToStorage = async (images) => {
 export const loadImagesFromStorage = async () => {
   try {
     const jsonValue = await AsyncStorage.getItem(IMAGE_STORAGE_KEY);
-    return jsonValue ? JSON.parse(jsonValue) : {};
+    return jsonValue ? JSON.parse(jsonValue) : {}; 
   } catch (e) {
     console.error('Failed to load images:', e);
-    return {};
+    return {}; 
   }
 };
 
 export const { addImage, loadImages, clearImages } = imageSlice.actions;
-
 export default imageSlice.reducer;
+
